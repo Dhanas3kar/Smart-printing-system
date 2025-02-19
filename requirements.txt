@@ -1,0 +1,4 @@
+Flask
+pymysql
+razorpay
+chart.js

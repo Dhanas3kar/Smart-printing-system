@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Smart Printer</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/script.js"></script>
+</head>
+<body>
+    <h1>Smart Printer System</h1>
+    <form id="print-form">
+        <input type="file" id="files" multiple required>
+        <input type="number" id="copies" placeholder="Number of copies" required>
+        <select id="color">
+            <option value="black_white">Black & White</option>
+            <option value="color">Color</option>
+        </select>
+        <button type="button" onclick="previewFiles()">Preview</button>
+        <div id="file-preview"></div>
+        <button type="button" onclick="calculatePrice()">Calculate Price</button>
+        <p id="price-display"></p>
+        <button type="button" onclick="makePayment()">Pay & Print</button>
+    </form>
+    <a href="/admin/login">Admin Dashboard</a>
+</body>
+</html>
