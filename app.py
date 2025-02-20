@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-import mysql
+import mysql.connector
+from config import DATABASE_CONFIG
 import razorpay
 import pymysql
 import os
@@ -8,6 +9,10 @@ import cups
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
+
+# MySQL Connection
+def get_db_connection():
+    return mysql.connector.connect(**DATABASE_CONFIG)
 #---------------------------------------------
 def print_file(file_path):
     conn = cups.Connection()
@@ -83,5 +88,5 @@ def trigger_print():
         os.system(f"lp {file}")
     return jsonify({"status": "success", "message": "Printing started"})
 
-if __name__ == '__main__':
-    app.run(debug=True)
+#if __name__ == '__main__':
+  #  app.run(debug=True)
