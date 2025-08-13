@@ -1,29 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Admin Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindCare AI - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- 1. Design System & Global Styles --- */
+        :root {
+            --primary-color: #4f46e5;
+            --primary-dark: #4338ca;
+            --sidebar-bg: #111827;
+            --sidebar-link-text: #9ca3af;
+            --sidebar-link-hover: #1f2937;
+            --sidebar-link-active: #4f46e5;
+            --page-bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+            --border-radius: 0.75rem;
+            --sidebar-width: 260px;
+            --transition-speed: 0.2s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--page-bg);
+            color: var(--text-primary);
+        }
+
+        /* --- 2. Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            grid-template-rows: auto 1fr;
+            height: 100vh;
+        }
+
+        /* --- 3. Sidebar Navigation --- */
+        .sidebar {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+            background-color: var(--sidebar-bg);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+        }
+        .sidebar-header i { color: var(--primary-color); }
+
+        .sidebar-nav {
+            flex-grow: 1;
+            list-style: none;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            color: var(--sidebar-link-text);
+            font-weight: 500;
+            transition: var(--transition-speed);
+        }
+        .nav-item a:hover {
+            background-color: var(--sidebar-link-hover);
+            color: var(--card-bg);
+        }
+        .nav-item a.active {
+            background-color: var(--sidebar-link-active);
+            color: var(--card-bg);
+        }
+        .nav-item a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+        }
+
+        /* --- 4. Header --- */
+        .header {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* --- 5. Main Content --- */
+        .main-content {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* --- 6. Components: Cards --- */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+        }
+
+        .card.revenue-card {
+            grid-column: 1 / -1; /* Make chart span full width */
+        }
+        
+        .card-header {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .stat-card .icon {
+            font-size: 1.5rem;
+            padding: 1rem;
+            border-radius: 50%;
+            color: var(--primary-color);
+            background-color: #e0e7ff;
+        }
+        .stat-card .info .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+        .stat-card .info .label {
+            color: var(--text-secondary);
+        }
+        
+        /* --- 7. Responsive Design --- */
+        @media (max-width: 1024px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none; /* In a real app, this would be toggled */
+            }
+            .header, .main-content {
+                grid-column: 1 / 2;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Admin Dashboard</h1>
-    <p>Welcome, Admin</p>
-    <div>
-        <h2>Weekly Revenue</h2>
-        <canvas id="revenueChart"></canvas>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-brain"></i>
+                <span>MindCare AI</span>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="#" class="active">
+                        <i class="fas fa-tachometer-alt fa-fw"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fas fa-users fa-fw"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fas fa-chart-line fa-fw"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="fas fa-cog fa-fw"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <ul class="sidebar-nav">
+                    <li class="nav-item">
+                        <a href="/admin/logout">
+                            <i class="fas fa-sign-out-alt fa-fw"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <header class="header">
+            <h1>Dashboard Overview</h1>
+            <div class="user-profile">
+                </div>
+        </header>
+        
+        <main class="main-content">
+            <div class="dashboard-grid">
+                <div class="card stat-card">
+                    <div class="icon"><i class="fas fa-wallet"></i></div>
+                    <div class="info">
+                        <div class="value">₹45,231.89</div>
+                        <div class="label">Total Revenue</div>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="icon"><i class="fas fa-user-plus"></i></div>
+                    <div class="info">
+                        <div class="value">+2,350</div>
+                        <div class="label">New Users</div>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="icon"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="info">
+                        <div class="value">1,200</div>
+                        <div class="label">Total Sessions</div>
+                    </div>
+                </div>
+
+                <div class="card revenue-card">
+                    <div class="card-header">Weekly Revenue</div>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </main>
     </div>
-    <a href="/admin/logout">Logout</a>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const ctx = document.getElementById('revenueChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-                datasets: [{
-                    label: 'Revenue (₹)',
-                    data: [1000, 1500, 1200, 1300, 2000, 2500, 1800],
-                    backgroundColor: 'blue'
-                }]
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            
+            // Create a gradient for the bar chart
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(79, 70, 229, 0.8)');
+            gradient.addColorStop(1, 'rgba(79, 70, 229, 0.2)');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                    datasets: [{
+                        label: 'Revenue (₹)',
+                        data: [10000, 15000, 12500, 13000, 21000, 25500, 18000],
+                        backgroundColor: gradient,
+                        borderColor: '#4f46e5',
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        hoverBackgroundColor: '#4338ca'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#111827',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            padding: 12,
+                            cornerRadius: 6,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e5e7eb',
+                                borderDash: [2, 4],
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + value / 1000 + 'k';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
         });
     </script>
 </body>
