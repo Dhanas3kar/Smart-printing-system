@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, s
 import mysql.connector
 from config import DATABASE_CONFIG
 import razorpay
-import pymysql
+# import pymysql (removed because not used)
 import os
 import cups
 
@@ -46,11 +46,10 @@ def admin_login():
     if request.method == 'POST':
         user_id = request.form['user_id']
         password = request.form['password']
-        if user_id == "RA2311003050355" and password == "Srm@ist":
-            session['admin'] = True
-            return redirect(url_for('admin_dashboard'))
-        else:
+        if user_id != "RA2311003050355" or password != "Srm@ist":
             return render_template('login.html', error="Invalid credentials")
+        session['admin'] = True
+        return redirect(url_for('admin_dashboard'))
     return render_template('login.html')
 
 @app.route('/admin/logout')
