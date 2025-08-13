@@ -3,28 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>MindCare AI - Admin Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- 1. Design System & Global Styles --- */
+        :root {
+            --primary-color: #4f46e5;
+            --primary-light: #6366f1;
+            --secondary-color: #111827;
+            --page-bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #d1d5db;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --error-bg: #fee2e2;
+
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --border-radius: 0.75rem;
+            --transition-speed: 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--page-bg);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* --- 2. Login Container Layout --- */
+        .login-container {
+            display: flex;
+            width: 100%;
+            max-width: 900px;
+            min-height: 600px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* --- 3. Branding Panel (Left Side) --- */
+        .login-branding {
+            flex-basis: 50%;
+            background: linear-gradient(160deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .branding-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        .branding-logo i {
+            margin-right: 0.5rem;
+        }
+        
+        .branding-welcome p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        [Image of a secure and modern login illustration]
+
+        /* --- 4. Form Panel (Right Side) --- */
+        .login-form-wrapper {
+            flex-basis: 50%;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-form-wrapper h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-form-wrapper .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: #f9fafb;
+            transition: var(--transition-speed);
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.85rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-speed);
+        }
+        .btn-submit:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .alert-error {
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* --- 5. Responsive Design --- */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                min-height: auto;
+                max-width: 400px;
+            }
+            .login-branding {
+                display: none; /* Hide branding on small screens for focus */
+            }
+            .login-form-wrapper {
+                padding: 2rem;
+            }
+        }
+        
+        /* --- 6. Animations --- */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+    </style>
 </head>
-<body class="d-flex align-items-center justify-content-center vh-100 bg-light">
-    <div class="card p-4 shadow-lg" style="width: 350px;">
-        <h2 class="text-center mb-4">Admin Login</h2>
-        {% if error %}
-            <div class="alert alert-danger text-center">{{ error }}</div>
-        {% endif %}
-        <form action="/admin/login" method="POST">
-            <div class="mb-3">
-                <label for="user_id" class="form-label">User Id</label>
-                <input type="text" id="user_id" name="user_id" class="form-control" required>
+<body>
+    <main class="login-container">
+        <section class="login-branding">
+            <div class="branding-content">
+                <div class="branding-logo">
+                    <i class="fas fa-brain"></i>
+                    <span>MindCare AI</span>
+                </div>
+                <div class="branding-welcome">
+                    <p>Welcome to the central hub for insights and management. Please log in to continue.</p>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
-    </div>
+        </section>
+
+        <section class="login-form-wrapper">
+            <form action="/admin/login" method="POST">
+                <h2>Admin Sign In</h2>
+                <p class="subtitle">Enter your credentials to access the dashboard.</p>
+                
+                {% if error %}
+                    <div class="alert-error">{{ error }}</div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="user_id" class="form-label">User ID</label>
+                    <input type="text" id="user_id" name="user_id" class="form-control" required placeholder="e.g., admin_01">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required placeholder="••••••••">
+                </div>
+                
+                <button type="submit" class="btn-submit">Sign In</button>
+            </form>
+        </section>
+    </main>
 </body>
 </html>
